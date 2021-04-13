@@ -80,32 +80,6 @@ module ActiveRecord
 
             if options[:source_type]
               scope.where! reflection.foreign_type => options[:source_type]
-            elsif !reflection_scope.where_clause.empty?
-              scope.where_clause = reflection_scope.where_clause
-
-              if includes = values[:includes]
-                scope.includes!(source_reflection.name => includes)
-              else
-                scope.includes!(source_reflection.name)
-              end
-
-              if values[:references] && !values[:references].empty?
-                scope.references!(values[:references])
-              else
-                scope.references!(source_reflection.table_name)
-              end
-
-              if joins = values[:joins]
-                scope.joins!(source_reflection.name => joins)
-              end
-
-              if left_outer_joins = values[:left_outer_joins]
-                scope.left_outer_joins!(source_reflection.name => left_outer_joins)
-              end
-
-              if scope.eager_loading? && order_values = values[:order]
-                scope = scope.order(order_values)
-              end
             end
 
             scope
